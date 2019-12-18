@@ -7,10 +7,14 @@
     using MediatR;
     using Microsoft.Extensions.Hosting;
 
-    [Command(Name = "SuperTool", Description = "Run helpful utilities for my application")]
+    [Command(Name = "SuperTool",
+        Description = "Run helpful utilities for my application")]
     [HelpOption]
     [VersionOptionFromMember(MemberName = "GetVersion")]
-    [Subcommand(typeof(Features.When.Commands.WhenCommand), typeof(Features.DoMath.Commands.DoMathCommand))]
+    [Subcommand(
+        typeof(Features.When.Commands.WhenCommand),
+        typeof(Features.DoMath.Commands.DoMathCommand))
+    ]
     internal class Program
     {
         private static async Task Main(string[] args)
