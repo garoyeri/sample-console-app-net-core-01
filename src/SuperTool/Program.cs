@@ -2,6 +2,7 @@
 {
     using System.Reflection;
     using System.Threading.Tasks;
+    using AutoMapper;
     using McMaster.Extensions.CommandLineUtils;
     using MediatR;
     using Microsoft.Extensions.Hosting;
@@ -9,7 +10,7 @@
     [Command(Name = "SuperTool", Description = "Run helpful utilities for my application")]
     [HelpOption]
     [VersionOptionFromMember(MemberName = "GetVersion")]
-    [Subcommand(typeof(Features.When.Commands.WhenCommand))]
+    [Subcommand(typeof(Features.When.Commands.WhenCommand), typeof(Features.DoMath.Commands.DoMathCommand))]
     internal class Program
     {
         private static async Task Main(string[] args)
@@ -23,12 +24,10 @@
             return Host.CreateDefaultBuilder()
                 .ConfigureServices((hostContext, services) =>
                 {
-                    services.AddMediatR(typeof(Program).Assembly);
+                    services
+                        .AddMediatR(typeof(Program).Assembly)
+                        .AddAutoMapper(typeof(Program).Assembly);
                 });
-        }
-
-        public Program()
-        {
         }
 
         private int OnExecute(CommandLineApplication app, IConsole console)
