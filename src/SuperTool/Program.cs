@@ -1,32 +1,48 @@
 ﻿namespace SuperTool
 {
+    using System.Reflection;
     using System.Threading.Tasks;
-    using Features.When;
+    using McMaster.Extensions.CommandLineUtils;
     using MediatR;
-    using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
 
+    [Command(Name = "SuperTool", Description = "Run helpful utilities for my application")]
+    [HelpOption]
+    [VersionOptionFromMember(MemberName = "GetVersion")]
+    [Subcommand(typeof(Features.When.Commands.WhenCommand))]
     internal class Program
     {
         private static async Task Main(string[] args)
         {
-            using var host = CreateHostBuilder(args).Build();
-            await host.StartAsync();
-            await host.StopAsync();
+            await CreateHostBuilder()
+                .RunCommandLineApplicationAsync<Program>(args);
         }
 
-        public static IHostBuilder CreateHostBuilder(string[] args)
+        public static IHostBuilder CreateHostBuilder()
         {
-            return Host.CreateDefaultBuilder(args)
+            return Host.CreateDefaultBuilder()
                 .ConfigureServices((hostContext, services) =>
                 {
-                    services.AddHostedService<SuperToolHostedService>();
-
-                    services.AddMediatR(typeof(SuperToolHostedService).Assembly);
-
-                    // turn off the startup messages logged that we won't be using
-                    services.PostConfigure<ConsoleLifetimeOptions>(options => options.SuppressStatusMessages = true);
+                    services.AddMediatR(typeof(Program).Assembly);
                 });
+        }
+
+        public Program()
+        {
+        }
+
+        private int OnExecute(CommandLineApplication app, IConsole console)
+        {
+            console.WriteLine("You must specify a command");
+            app.ShowHelp();
+            return 1;
+        }
+
+        private string GetVersion()
+        {
+            return typeof(Program).Assembly
+                ?.GetCustomAttribute<AssemblyInformationalVersionAttribute>()
+                ?.InformationalVersion;
         }
     }
 }
