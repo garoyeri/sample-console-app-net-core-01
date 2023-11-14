@@ -1,12 +1,12 @@
-﻿namespace SuperTool
-{
-    using System.Reflection;
-    using System.Threading.Tasks;
-    using AutoMapper;
-    using McMaster.Extensions.CommandLineUtils;
-    using MediatR;
-    using Microsoft.Extensions.Hosting;
+﻿using System;
+using System.Reflection;
+using System.Threading.Tasks;
+using McMaster.Extensions.CommandLineUtils;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
+namespace SuperTool
+{
     [Command(Name = "SuperTool",
         Description = "Run helpful utilities for my application")]
     [HelpOption]
@@ -29,7 +29,7 @@
                 .ConfigureServices((hostContext, services) =>
                 {
                     services
-                        .AddMediatR(typeof(Program).Assembly)
+                        .AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.GetAssemblies()))
                         .AddAutoMapper(typeof(Program).Assembly);
                 });
         }
