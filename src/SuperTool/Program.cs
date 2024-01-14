@@ -29,10 +29,7 @@ namespace SuperTool
                 .ConfigureServices((hostContext, services) =>
                 {
                     services
-                        .AddMediatR(o =>
-                        {
-                            o.RegisterServicesFromAssembly(typeof(Program).Assembly);
-                        })
+                        .AddMediatR(o => o.RegisterServicesFromAssemblyContaining<Program>())
                         .AddAutoMapper(typeof(Program).Assembly);
                 });
         }
