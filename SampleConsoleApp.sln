@@ -1,9 +1,9 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29609.76
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuperTool", "src\SuperTool\SuperTool.csproj", "{EF3B7EBB-25F2-47C8-B20E-102E3869531D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SuperTool", "src\SuperTool\SuperTool.csproj", "{EF3B7EBB-25F2-47C8-B20E-102E3869531D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

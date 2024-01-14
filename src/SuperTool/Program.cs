@@ -1,10 +1,10 @@
-﻿namespace SuperTool
+﻿using Microsoft.Extensions.DependencyInjection;
+
+namespace SuperTool
 {
     using System.Reflection;
     using System.Threading.Tasks;
-    using AutoMapper;
     using McMaster.Extensions.CommandLineUtils;
-    using MediatR;
     using Microsoft.Extensions.Hosting;
 
     [Command(Name = "SuperTool",
@@ -29,7 +29,7 @@
                 .ConfigureServices((hostContext, services) =>
                 {
                     services
-                        .AddMediatR(typeof(Program).Assembly)
+                        .AddMediatR(o => o.RegisterServicesFromAssemblyContaining<Program>())
                         .AddAutoMapper(typeof(Program).Assembly);
                 });
         }
@@ -43,8 +43,7 @@
 
         private string GetVersion()
         {
-            return typeof(Program).Assembly
-                ?.GetCustomAttribute<AssemblyInformationalVersionAttribute>()
+            return typeof(Program).Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()
                 ?.InformationalVersion;
         }
     }
